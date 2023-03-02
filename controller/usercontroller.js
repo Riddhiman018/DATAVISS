@@ -102,7 +102,14 @@ async function logout(req,res){
 
 async function allusers(req,res){
     try{
-        const allusers = await usrmodel.find({ROLE:'User'}).select('FIRST_NAME LAST_NAME EMAIL CREATED_AT UPDATED_AT')
+        const fields = req.body.fields.join(" ")
+        let allUsers
+        if(fields.length==0){
+            allusers = await usrmodel.find({ROLE:'User'}).select('FIRST_NAME MIDDLE_NAME LAST_NAME EMAIL CREATED_AT UPDATED_AT')
+        }
+        else{
+            allusers = await usrmodel.find({ROLE:'User'}).select(`${fields}`)
+        }
         if(allusers){
             res.status(200).send({
                 allusers:allusers
@@ -118,10 +125,20 @@ async function allusers(req,res){
 
 async function alladmins(req,res){
     try{
-        const alladmins = await usrmodel.find({
-            ROLE:'Admin'
-        }).select('FIRST_NAME LAST_NAME EMAIL CREATED_AT UPDATED_AT')
-        if(allusers){
+        const fields = req.body.fields.join(" ")
+        let alladmins;
+        if(fields.length==0){
+            alladmins = await usrmodel.find({
+                ROLE:'Admin'
+            }).select('FIRST_NAME LAST_NAME EMAIL CREATED_AT UPDATED_AT')
+    
+        }
+        else{
+            alladmins = await usrmodel.find({
+                ROLE:'Admin'
+            }).select(`${fields}`)
+        }
+        if(alladmins){
             res.status(200).send({
                 alladmins:alladmins
             })
@@ -209,5 +226,5 @@ async function updateAdmin(req,res){
     }
 }
 module.exports = {
-    register,login,logout,allusers,alladmins
+    register,login,logout,allusers,alladmins,updateUser,updateAdmin
 }
