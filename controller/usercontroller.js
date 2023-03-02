@@ -93,12 +93,47 @@ async function login(req,res){
 }
 
 async function logout(req,res){
+    console.log(req.cookies['token-cookie'])
     res.clearCookie('token-cookie')
     res.status(200).send({
         Message:'Logged Out'
     })
 }
 
+async function allusers(req,res){
+    try{
+        const allusers = await usrmodel.find({}).select('FIRST_NAME LAST_NAME EMAIL CREATED_AT UPDATED_AT')
+        if(allusers){
+            res.status(200).send({
+                allusers:allusers
+            })
+        }
+    }catch(e){
+        console.log(e)
+        res.status(404).send({
+            Message:'Error'
+        })
+    }
+}
+
+async function alladmins(req,res){
+    try{
+        const alladmins = await usrmodel.find({
+            ROLE:'Admin'
+        }).select('FIRST_NAME LAST_NAME EMAIL CREATED_AT UPDATED_AT')
+        if(allusers){
+            res.status(200).send({
+                alladmins:alladmins
+            })
+        }
+    }catch(e){
+        console.log(e)
+        res.status(404).send({
+            Message:'Error'
+        })
+    }
+}
+
 module.exports = {
-    register,login,logout
+    register,login,logout,allusers,alladmins
 }
