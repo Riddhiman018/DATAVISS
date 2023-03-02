@@ -9,6 +9,6 @@ router.post('/login',controllers.login)
 router.post('/logout',controllers.logout)
 router.post('/allusers',verifymiddleware.verifyJwt,controllers.allusers)
 router.post('/alladmins',checkadmin.checkadmin,verifymiddleware.verifyJwt,controllers.alladmins)
-router.post('/edituser',verifymiddleware.verifyJwt,controllers.updateuser)
-router.post('/editadmin',checkadmin.checkadmin,verifymiddleware.verifymiddleware,controllers.updateadmin)
+router.post('/edituser',verifymiddleware.verifyJwt,controllers.updateUser)
+router.post('/editadmin',checkadmin.checkadmin,verifymiddleware.verifyJwt,controllers.updateAdmin)
 module.exports=router 
