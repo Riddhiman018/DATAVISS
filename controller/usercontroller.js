@@ -128,6 +128,7 @@ async function alladmins(req,res){
         const fields = req.body.fields.join(" ")
         let alladmins;
         if(fields.length==0){
+            
             alladmins = await usrmodel.find({
                 ROLE:'Admin'
             }).select('FIRST_NAME LAST_NAME EMAIL CREATED_AT UPDATED_AT')
