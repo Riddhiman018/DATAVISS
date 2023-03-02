@@ -5,7 +5,8 @@ const usr = new mongoose.Schema({
         required:true
     },
     MIDDLE_NAME:{
-        type:String
+        type:String,
+        default:''
     },
     LAST_NAME:{
         type:String,

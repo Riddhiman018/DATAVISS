@@ -102,7 +102,7 @@ async function logout(req,res){
 
 async function allusers(req,res){
     try{
-        const allusers = await usrmodel.find({}).select('FIRST_NAME LAST_NAME EMAIL CREATED_AT UPDATED_AT')
+        const allusers = await usrmodel.find({ROLE:'User'}).select('FIRST_NAME LAST_NAME EMAIL CREATED_AT UPDATED_AT')
         if(allusers){
             res.status(200).send({
                 allusers:allusers
@@ -134,6 +134,80 @@ async function alladmins(req,res){
     }
 }
 
+async function updateUser(req,res){
+    try{
+        const usr_to_be_updated = await usrmodel.find({
+            EMAIL:req.body.EMAIL,
+            ROLE:'User'
+        })
+        if(usr_to_be_updated){
+            const updt = await usrmodel.updateOne({
+                EMAIL:req.body.EMAIL
+            },{
+                FIRST_NAME:req.body.FIRST_NAME||usr_to_be_updated.FIRST_NAME,
+                MIDDLE_NAME:req.body.MIDDLE_NAME||usr_to_be_updated.MIDDLE_NAME||'',
+                UPDATED_AT:new Date().toISOString()
+            })
+
+            if(updt){
+                res.status(200).send({
+                    Message:'Updated'
+                })
+            }
+            else{
+                res.status(200).send({
+                    Message:'Failure'
+                })
+            }
+        }else{
+            res.status(200).send({
+                Message:'Invalid User'
+            })
+        }
+    }catch(e){
+        console.log(e)
+        res.status(404).send({
+            Message:'Failed'
+        })
+    }
+}
+async function updateAdmin(req,res){
+    try{
+        const usr_to_be_updated = await usrmodel.find({
+            EMAIL:req.body.EMAIL,
+            ROLE:'Admin'
+        })
+        if(usr_to_be_updated){
+            const updt = await usrmodel.updateOne({
+                EMAIL:req.body.EMAIL
+            },{
+                FIRST_NAME:req.body.FIRST_NAME||usr_to_be_updated.FIRST_NAME,
+                MIDDLE_NAME:req.body.MIDDLE_NAME||usr_to_be_updated.MIDDLE_NAME||'',
+                UPDATED_AT:new Date().toISOString()
+            })
+
+            if(updt){
+                res.status(200).send({
+                    Message:'Updated'
+                })
+            }
+            else{
+                res.status(200).send({
+                    Message:'Failure'
+                })
+            }
+        }else{
+            res.status(200).send({
+                Message:'Invalid User'
+            })
+        }
+    }catch(e){
+        console.log(e)
+        res.status(404).send({
+            Message:'Failed'
+        })
+    }
+}
 module.exports = {
     register,login,logout,allusers,alladmins
 }
