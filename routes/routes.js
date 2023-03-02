@@ -8,5 +8,5 @@ router.post('/register',middleWares.check,controllers.register)
 router.post('/login',controllers.login)
 router.post('/logout',controllers.logout)
 router.get('/allusers',verifymiddleware.verifyJwt,controllers.allusers)
-router.get('/alladmins',checkadmin.checkadmin,controllers.alladmins)
+router.get('/alladmins',checkadmin.checkadmin,verifymiddleware.verifyJwt,controllers.alladmins)
 module.exports=router 
